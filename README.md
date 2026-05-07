@@ -1,12 +1,7 @@
----
-configs:
-- config_name: default
-  data_files:
-  - split: train
-    path: metadata.jsonl
----
-
 # DI-Bench
+
+![DI-Bench Overview](assets/overview.pdf)
+
 
 DI-Bench is a disaster intelligence benchmark for multimodal remote sensing understanding and geospatial reasoning. It contains 9 real-world disaster scenes and 4,428 benchmark questions covering retrieval, cross-view matching, damage assessment, spatial alignment, population estimation, route planning, UAV landing assessment, and measurement-oriented reasoning tasks.
 
