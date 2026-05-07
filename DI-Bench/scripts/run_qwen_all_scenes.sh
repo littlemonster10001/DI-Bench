@@ -6,7 +6,7 @@ ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 PROJECT_ROOT="$(cd "${ROOT_DIR}/.." && pwd)"
 
 : "${MODEL_PATH:?Please export MODEL_PATH to a local Qwen-VL model directory.}"
-DATA_PATH="${DATA_PATH:-/data01/yeziheng/Dataset/Di-Bench}"
+DATA_PATH="${DATA_PATH:-/path/to/Di-Bench}"
 OUT_DIR="${OUT_DIR:-${PROJECT_ROOT}/outputs/qwen_local_clean_all_scenes}"
 TENSOR_PARALLEL_SIZE="${TENSOR_PARALLEL_SIZE:-1}"
 GPU_MEMORY_UTILIZATION="${GPU_MEMORY_UTILIZATION:-0.90}"

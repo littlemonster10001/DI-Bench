@@ -28,7 +28,7 @@ DI-Bench/
 Use the existing `Di_bench` conda environment, or install the local package dependencies:
 
 ```bash
-cd /data01/yeziheng/DI-Bench-v2/DI-Bench
+cd DI-Bench
 pip install -r requirements.txt
 ```
 
@@ -43,7 +43,7 @@ Notes:
 The examples below assume the dataset is located at:
 
 ```text
-/data01/yeziheng/Dataset/Di-Bench
+/path/to/Di-Bench
 ```
 
 ## Qwen-VL Usage
@@ -51,15 +51,14 @@ The examples below assume the dataset is located at:
 Run one scene:
 
 ```bash
-source /data01/anaconda3/etc/profile.d/conda.sh
-conda activate /data01/yeziheng/envs/Di_bench
+conda activate di_bench
 
-python /data01/yeziheng/DI-Bench-v2/DI-Bench/evaluate.py \
+python evaluate.py \
   --backend qwen \
-  --model_path /data01/public/Qwen/Qwen3-VL-2B-Instruct \
-  --data_path /data01/yeziheng/Dataset/Di-Bench \
+  --model_path /path/to/Qwen3-VL-2B-Instruct \
+  --data_path /path/to/Di-Bench \
   --scene scene_001 \
-  --report_path /data01/yeziheng/DI-Bench-v2/outputs/di_bench_qwen_scene_001.xlsx \
+  --report_path /path/to/outputs/di_bench_qwen_scene_001.xlsx \
   --task_type all \
   --bbox_mode visual \
   --source_mode full \
@@ -71,11 +70,10 @@ python /data01/yeziheng/DI-Bench-v2/DI-Bench/evaluate.py \
 Run all scenes:
 
 ```bash
-source /data01/anaconda3/etc/profile.d/conda.sh
-conda activate /data01/yeziheng/envs/Di_bench
+conda activate di_bench
 
-export MODEL_PATH=/data01/public/Qwen/Qwen3-VL-2B-Instruct
-bash /data01/yeziheng/DI-Bench-v2/DI-Bench/scripts/run_qwen_all_scenes.sh
+export MODEL_PATH=/path/to/Qwen3-VL-2B-Instruct
+bash scripts/run_qwen_all_scenes.sh
 ```
 
 ## InternVL3 / InternVL3.5 Usage
@@ -96,15 +94,14 @@ All of them use the same backend:
 Run one scene:
 
 ```bash
-source /data01/anaconda3/etc/profile.d/conda.sh
-conda activate /data01/yeziheng/envs/Di_bench
+conda activate di_bench
 
-python /data01/yeziheng/DI-Bench-v2/DI-Bench/evaluate.py \
+python evaluate.py \
   --backend internvl \
-  --model_path /data01/public/internvl/InternVL3-2B \
-  --data_path /data01/yeziheng/Dataset/Di-Bench \
+  --model_path /path/to/InternVL3-2B \
+  --data_path /path/to/Di-Bench \
   --scene scene_001 \
-  --report_path /data01/yeziheng/DI-Bench-v2/outputs/di_bench_internvl3_scene_001.xlsx \
+  --report_path /path/to/outputs/di_bench_internvl3_scene_001.xlsx \
   --task_type all \
   --bbox_mode visual \
   --source_mode full \
@@ -117,19 +114,18 @@ python /data01/yeziheng/DI-Bench-v2/DI-Bench/evaluate.py \
 Replace `--model_path` with any local `InternVL3` or `InternVL3.5` checkpoint path, for example:
 
 ```text
-/data01/public/internvl/InternVL3-8B
-/data01/public/internvl/InternVL3_5-4B
-/data01/public/internvl/InternVL3_5-8B
+/path/to/InternVL3-8B
+/path/to/InternVL3_5-4B
+/path/to/InternVL3_5-8B
 ```
 
 Run all scenes:
 
 ```bash
-source /data01/anaconda3/etc/profile.d/conda.sh
-conda activate /data01/yeziheng/envs/Di_bench
+conda activate di_bench
 
-export MODEL_PATH=/data01/public/internvl/InternVL3_5-4B
-bash /data01/yeziheng/DI-Bench-v2/DI-Bench/scripts/run_internvl_all_scenes.sh
+export MODEL_PATH=/path/to/InternVL3_5-4B
+bash scripts/run_internvl_all_scenes.sh
 ```
 
 ## Main Arguments
