@@ -1,0 +1,14 @@
+torch
+torchvision
+transformers
+vllm
+pillow
+openpyxl
+tqdm
+numpy
+geopandas
+shapely
+pyogrio
+accelerate
+sentencepiece
+einops
