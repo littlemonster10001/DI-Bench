@@ -54,39 +54,68 @@ export MODEL_PATH=/path/to/local/model
 export OUT_DIR=outputs
 ```
 
-## Qwen-VL Usage
+## Model Usage
 
-Run one scene:
+Use the same entrypoint for all supported model families. Select the model adapter with `BACKEND` and point `MODEL_PATH` to the local checkpoint.
+
+Supported backend values:
+
+```text
+qwen
+internvl
+```
+
+Example model paths:
+
+```text
+/path/to/Qwen-VL
+/path/to/InternVL3-8B
+/path/to/InternVL3_5-4B
+/path/to/InternVL3_5-8B
+```
+
+Run one scene with a unified command:
 
 ```bash
+export BACKEND=qwen
+export MODEL_PATH=/path/to/local/model
+export DATA_PATH=/path/to/DI-Bench-dataset
+export OUT_DIR=outputs
+
 python evaluate.py \
-  --backend qwen \
+  --backend "${BACKEND}" \
   --model_path "${MODEL_PATH}" \
   --data_path "${DATA_PATH}" \
   --scene scene_001 \
-  --report_path "${OUT_DIR}/di_bench_qwen_scene_001.xlsx" \
+  --report_path "${OUT_DIR}/di_bench_${BACKEND}_scene_001.xlsx" \
   --task_type all \
   --bbox_mode visual \
   --source_mode full \
-  --tensor_parallel_size 1 \
+  --max_new_tokens 256 \
   --dtype bfloat16 \
-  --limit_mm_per_prompt 16
+  --tensor_parallel_size 1 \
+  --gpu_memory_utilization 0.90 \
+  --limit_mm_per_prompt 16 \
+  --device cuda \
+  --image_size 448 \
+  --max_tiles_per_image 12
 ```
 
-Run all scenes:
+Most arguments are shared by the CLI. Backend-specific arguments are ignored when they do not apply:
+
+- Qwen-VL uses the vLLM-related arguments such as `--tensor_parallel_size`, `--gpu_memory_utilization`, `--max_model_len`, and `--limit_mm_per_prompt`.
+- InternVL uses `--device`, `--image_size`, and `--max_tiles_per_image`.
+
+Run all scenes with the matching backend script:
 
 ```bash
 export DATA_PATH=/path/to/DI-Bench-dataset
 export MODEL_PATH=/path/to/Qwen-VL
 bash scripts/run_qwen_all_scenes.sh
-```
 
-Run a one-sample smoke test for every task type:
-
-```bash
 export DATA_PATH=/path/to/DI-Bench-dataset
-export MODEL_PATH=/path/to/Qwen-VL
-bash scripts/run_qwen_all_tasks_smoke.sh
+export MODEL_PATH=/path/to/InternVL3_5-4B
+bash scripts/run_internvl_all_scenes.sh
 ```
 
 For large Qwen-VL checkpoints, configure tensor parallelism and sequence length through environment variables:
@@ -99,56 +128,15 @@ export MAX_MODEL_LEN=32768
 bash scripts/run_qwen_all_tasks_smoke.sh
 ```
 
-The Qwen scripts set `VLLM_WORKER_MULTIPROC_METHOD=spawn` by default to avoid CUDA re-initialization errors in vLLM worker subprocesses.
-
-## InternVL3 / InternVL3.5 Usage
-
-This package includes a local adapter for the following model families:
-
-- `InternVL3-2B`
-- `InternVL3-8B`
-- `InternVL3.5-4B`
-- `InternVL3.5-8B`
-
-All of them use the same backend:
-
-```text
---backend internvl
-```
-
-Run one scene:
-
-```bash
-python evaluate.py \
-  --backend internvl \
-  --model_path "${MODEL_PATH}" \
-  --data_path "${DATA_PATH}" \
-  --scene scene_001 \
-  --report_path "${OUT_DIR}/di_bench_internvl3_scene_001.xlsx" \
-  --task_type all \
-  --bbox_mode visual \
-  --source_mode full \
-  --dtype bfloat16 \
-  --device cuda \
-  --image_size 448 \
-  --max_tiles_per_image 12
-```
-
-Replace `--model_path` with any local `InternVL3` or `InternVL3.5` checkpoint path, for example:
-
-```text
-/path/to/InternVL3-8B
-/path/to/InternVL3_5-4B
-/path/to/InternVL3_5-8B
-```
-
-Run all scenes:
+Run a Qwen one-sample smoke test for every task type:
 
 ```bash
 export DATA_PATH=/path/to/DI-Bench-dataset
-export MODEL_PATH=/path/to/InternVL3_5-4B
-bash scripts/run_internvl_all_scenes.sh
+export MODEL_PATH=/path/to/Qwen-VL
+bash scripts/run_qwen_all_tasks_smoke.sh
 ```
+
+The Qwen scripts set `VLLM_WORKER_MULTIPROC_METHOD=spawn` by default to avoid CUDA re-initialization errors in vLLM worker subprocesses.
 
 ## Main Arguments
 
