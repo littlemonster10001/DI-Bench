@@ -81,6 +81,26 @@ export MODEL_PATH=/path/to/Qwen-VL
 bash scripts/run_qwen_all_scenes.sh
 ```
 
+Run a one-sample smoke test for every task type:
+
+```bash
+export DATA_PATH=/path/to/DI-Bench-dataset
+export MODEL_PATH=/path/to/Qwen-VL
+bash scripts/run_qwen_all_tasks_smoke.sh
+```
+
+For large Qwen-VL checkpoints, configure tensor parallelism and sequence length through environment variables:
+
+```bash
+export DATA_PATH=/path/to/DI-Bench-dataset
+export MODEL_PATH=/path/to/Qwen-VL
+export TENSOR_PARALLEL_SIZE=4
+export MAX_MODEL_LEN=32768
+bash scripts/run_qwen_all_tasks_smoke.sh
+```
+
+The Qwen scripts set `VLLM_WORKER_MULTIPROC_METHOD=spawn` by default to avoid CUDA re-initialization errors in vLLM worker subprocesses.
+
 ## InternVL3 / InternVL3.5 Usage
 
 This package includes a local adapter for the following model families:
@@ -148,6 +168,7 @@ Qwen-specific:
 - `--tensor_parallel_size`
 - `--gpu_memory_utilization`
 - `--max_num_seqs`
+- `--max_model_len`
 - `--limit_mm_per_prompt`
 - `--enforce_eager`
 
@@ -159,10 +180,29 @@ InternVL-specific:
 
 ## Smoke Test
 
-For a minimal smoke test, add:
+For a minimal single-task smoke test, add:
 
 ```bash
 --limit 1
 ```
 
-That is the fastest way to verify that the model path, dataset path, and runtime environment are correct before launching all scenes.
+To check all DI-Bench task prompters and the Qwen inference path, use:
+
+```bash
+export DATA_PATH=/path/to/DI-Bench-dataset
+export MODEL_PATH=/path/to/Qwen-VL
+bash scripts/run_qwen_all_tasks_smoke.sh
+```
+
+Common environment variables supported by the run scripts:
+
+- `DATA_PATH`: dataset root containing `scene_*` directories
+- `MODEL_PATH`: local checkpoint directory
+- `OUT_DIR`: output report directory
+- `BBOX_MODE`: `visual` or `raw`
+- `SOURCE_MODE`: `full` or `none`
+- `MAX_NEW_TOKENS`: generation length
+- `TENSOR_PARALLEL_SIZE`: vLLM tensor parallel size for Qwen
+- `GPU_MEMORY_UTILIZATION`: vLLM GPU memory fraction for Qwen
+- `MAX_MODEL_LEN`: optional Qwen maximum context length override
+- `LIMIT`: optional per-scene sample cap for all-scene scripts
