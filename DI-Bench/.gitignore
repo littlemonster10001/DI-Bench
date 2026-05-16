@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+.cache/
+cache/
+cache_v2/
+outputs/
+*.xlsx
+*.log
+
+.DS_Store
+.env
+.venv/
+venv/

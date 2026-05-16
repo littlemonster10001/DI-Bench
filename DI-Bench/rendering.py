@@ -98,7 +98,10 @@ def draw_routes(image: Image.Image, routes: list[dict]) -> Image.Image:
         color = palette[idx % len(palette)]
         path = [(int(round(x)), int(round(y))) for x, y in points]
         draw.line(path, fill=color, width=width, joint="curve")
-        start_x, start_y = path[0]
+        label_index = min(len(path) - 1, max(1, len(path) // 3))
+        start_x, start_y = path[label_index]
+        start_x = max(0, min(canvas.size[0] - 48, start_x + (idx % 3) * 12))
+        start_y = max(0, min(canvas.size[1] - 36, start_y + (idx // 3) * 12))
         left, top, right, bottom = draw.textbbox((0, 0), label, font=font)
         draw.rounded_rectangle(
             [start_x, start_y, start_x + (right - left) + 18, start_y + (bottom - top) + 14],

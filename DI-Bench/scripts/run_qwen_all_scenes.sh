@@ -6,7 +6,7 @@ ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 PROJECT_ROOT="$(cd "${ROOT_DIR}/.." && pwd)"
 
 : "${MODEL_PATH:?Please export MODEL_PATH to a local Qwen-VL model directory.}"
-DATA_PATH="${DATA_PATH:-/path/to/Di-Bench}"
+: "${DATA_PATH:?Please export DATA_PATH to the DI-Bench dataset root.}"
 OUT_DIR="${OUT_DIR:-${PROJECT_ROOT}/outputs/qwen_local_clean_all_scenes}"
 TENSOR_PARALLEL_SIZE="${TENSOR_PARALLEL_SIZE:-1}"
 GPU_MEMORY_UTILIZATION="${GPU_MEMORY_UTILIZATION:-0.90}"
@@ -23,6 +23,9 @@ FEW_SHOT_SCOPE="${FEW_SHOT_SCOPE:-same_task}"
 FEW_SHOT_SELECTION="${FEW_SHOT_SELECTION:-first}"
 
 mkdir -p "${OUT_DIR}"
+
+export VLLM_WORKER_MULTIPROC_METHOD="${VLLM_WORKER_MULTIPROC_METHOD:-spawn}"
+export TOKENIZERS_PARALLELISM="${TOKENIZERS_PARALLELISM:-false}"
 
 for scene_dir in "${DATA_PATH}"/scene_*; do
     scene="$(basename "${scene_dir}")"

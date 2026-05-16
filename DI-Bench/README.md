@@ -16,9 +16,9 @@ The intended use case is to evaluate one local model over the DI-Bench scenes an
 DI-Bench/
 ├── benchmark/                # dataset loading, evaluation, xlsx export
 ├── model_adapters/           # local model backends
+├── task_prompters/           # task-specific prompt and visual overlay builders
 ├── scripts/                  # batch run scripts
 ├── evaluate.py               # main entry
-├── prompting.py              # local prompt and image construction
 ├── rendering.py              # overlay helpers
 └── requirements.txt
 ```
@@ -43,7 +43,15 @@ Notes:
 The examples below assume the dataset is located at:
 
 ```text
-/path/to/Di-Bench
+/path/to/DI-Bench-dataset
+```
+
+Set paths for your local environment:
+
+```bash
+export DATA_PATH=/path/to/DI-Bench-dataset
+export MODEL_PATH=/path/to/local/model
+export OUT_DIR=outputs
 ```
 
 ## Qwen-VL Usage
@@ -51,14 +59,12 @@ The examples below assume the dataset is located at:
 Run one scene:
 
 ```bash
-conda activate di_bench
-
 python evaluate.py \
   --backend qwen \
-  --model_path /path/to/Qwen3-VL-2B-Instruct \
-  --data_path /path/to/Di-Bench \
+  --model_path "${MODEL_PATH}" \
+  --data_path "${DATA_PATH}" \
   --scene scene_001 \
-  --report_path /path/to/outputs/di_bench_qwen_scene_001.xlsx \
+  --report_path "${OUT_DIR}/di_bench_qwen_scene_001.xlsx" \
   --task_type all \
   --bbox_mode visual \
   --source_mode full \
@@ -70,9 +76,8 @@ python evaluate.py \
 Run all scenes:
 
 ```bash
-conda activate di_bench
-
-export MODEL_PATH=/path/to/Qwen3-VL-2B-Instruct
+export DATA_PATH=/path/to/DI-Bench-dataset
+export MODEL_PATH=/path/to/Qwen-VL
 bash scripts/run_qwen_all_scenes.sh
 ```
 
@@ -94,14 +99,12 @@ All of them use the same backend:
 Run one scene:
 
 ```bash
-conda activate di_bench
-
 python evaluate.py \
   --backend internvl \
-  --model_path /path/to/InternVL3-2B \
-  --data_path /path/to/Di-Bench \
+  --model_path "${MODEL_PATH}" \
+  --data_path "${DATA_PATH}" \
   --scene scene_001 \
-  --report_path /path/to/outputs/di_bench_internvl3_scene_001.xlsx \
+  --report_path "${OUT_DIR}/di_bench_internvl3_scene_001.xlsx" \
   --task_type all \
   --bbox_mode visual \
   --source_mode full \
@@ -122,8 +125,7 @@ Replace `--model_path` with any local `InternVL3` or `InternVL3.5` checkpoint pa
 Run all scenes:
 
 ```bash
-conda activate di_bench
-
+export DATA_PATH=/path/to/DI-Bench-dataset
 export MODEL_PATH=/path/to/InternVL3_5-4B
 bash scripts/run_internvl_all_scenes.sh
 ```

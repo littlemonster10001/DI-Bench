@@ -4,6 +4,9 @@ from urllib.parse import urlparse
 
 from PIL import Image
 from transformers import AutoProcessor
+
+os.environ.setdefault("VLLM_WORKER_MULTIPROC_METHOD", "spawn")
+
 from vllm import LLM, SamplingParams
 
 from model_adapters.base import BaseModelAdapter

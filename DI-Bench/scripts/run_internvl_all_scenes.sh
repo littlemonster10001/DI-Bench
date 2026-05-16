@@ -6,7 +6,7 @@ ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 PROJECT_ROOT="$(cd "${ROOT_DIR}/.." && pwd)"
 
 : "${MODEL_PATH:?Please export MODEL_PATH to a local InternVL3/InternVL3.5 model directory.}"
-DATA_PATH="${DATA_PATH:-/path/to/Di-Bench}"
+: "${DATA_PATH:?Please export DATA_PATH to the DI-Bench dataset root.}"
 OUT_DIR="${OUT_DIR:-${PROJECT_ROOT}/outputs/internvl_local_all_scenes}"
 CACHE_ROOT="${CACHE_ROOT:-${PROJECT_ROOT}/.cache}"
 DTYPE="${DTYPE:-bfloat16}"
